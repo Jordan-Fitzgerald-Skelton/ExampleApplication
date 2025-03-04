@@ -37,15 +37,13 @@ jobs:
           command: npm run test
       - run:
         name: Login to Docker Hub
-        command: docker login -u "$DOCKER_USERNAME" -p $DOCKER_PASSWORD
-
+        command: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - run:
           name: Build Docker Image
-          command: docker build -t $IMAGE_NAME
-
+          command: docker build -t $DOCKER_USERNAME/$IMAGE_NAME .
       - run:
           name: Publish Docker Image
-          command: docker push $IMAGE_NAME
+          command: docker push $DOCKER_USERNAME/$IMAGE_NAME
 
   deploy:
     docker:
