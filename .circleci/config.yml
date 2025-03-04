@@ -40,7 +40,7 @@ jobs:
           command: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - run:
           name: Build Docker Image
-          command: docker build -t $DOCKER_USERNAME/$IMAGE_NAME .
+          command: docker build -t $DOCKER_USERNAME/$IMAGE_NAME
       - run:
           name: Publish Docker Image
           command: docker push $DOCKER_USERNAME/$IMAGE_NAME
