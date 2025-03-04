@@ -35,10 +35,17 @@ jobs:
       - run:
           name: Run tests
           command: npm run test
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
+      - run:
+        name: Login to Docker Hub
+        command: docker login -u "$DOCKER_USERNAME" -p $DOCKER_PASSWORD
+
+      - run:
+          name: Build Docker Image
+          command: docker build -t $IMAGE_NAME
+
+      - run:
+          name: Publish Docker Image
+          command: docker push $IMAGE_NAME
 
   deploy:
     docker:
