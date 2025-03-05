@@ -24,9 +24,10 @@ jobs:
       - image: circleci/node:10.16.3
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Update npm
-          command: sudo npm install -g npm@5
+          command: 'sudo npm install -g npm@5'
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
@@ -35,6 +36,10 @@ jobs:
       - run:
           name: Run tests
           command: npm run test
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
       - run:
           name: Login to Docker Hub
           command: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
